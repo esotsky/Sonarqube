@@ -77,9 +77,8 @@ echo "your password is admin"
 sleep 4
 
 echo "Please change yoru password when you login"
-sleep 
+sleep 5
 
 echo "Sonarcube has been successfully installed"
-echo "Great work!"
-echo "even better!"
-echo "last one"
+
+#Try 1
