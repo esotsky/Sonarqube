@@ -1,0 +1,83 @@
+#!/bin/bash
+
+#Author- Eric Sotsky
+#Date- October 25, 2022
+#Description- Installation of Sonarcube on Centos7
+# Run this as a vagrant user
+
+
+echo "Installation of Sonarcube will begin"       
+
+
+#Check Username
+
+user_name=`whoami`
+if  [ $user_name != vagrant ];
+
+then
+
+echo "Must be run as user Vagrant"
+
+exit 1
+
+fi
+
+# Step 1 Java Installation
+
+echo "We will now begin to install Java"
+sleep 5
+
+sudo yum update -y
+sudo yum install java-11-openjdk-devel -y
+sudo yum install java-11-openjdk -y
+
+Sleep 5
+
+#Step 2 Download Sonarcube latest versions on the server
+
+echo "We will now install the latest versions of Sonarcube on your server"
+sleep 5
+
+cd /opt
+sudo yum install wget unzip  -y
+sudo wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.3.0.51899.zip       
+
+sleep 5
+
+# Step 3- Extracting Packages
+
+echo "We will now extract the necessary packages in order to run Sonarcube"
+sleep 5
+
+sudo unzip /opt/sonarqube-9.3.0.51899.zip
+
+
+sleep 5
+
+# Step 4- We will now change ownership to the user, and then Switch to Linux binaries directory to start service
+
+echo "We will now change ownership to the user, and then Switch to Linux binaries dire        ctory to start service"
+
+sleep 5
+
+sudo chown -R vagrant:vagrant /opt/sonarqube-9.3.0.51899
+cd /opt/sonarqube-9.3.0.51899/bin/linux-x86-64/  
+sudo firewall-cmd --permanent --add-port=9000/tcp
+sudo firewall-cmd --reload
+
+ ./sonar.sh start
+
+echo "Connect to the Browser through your Browser"
+echo "http://<your-ip-address>:9000"
+sleep 10
+
+echo "your username is admin"
+sleep 4
+echo "your password is admin"
+sleep 4
+
+echo "Please change yoru password when you login"
+sleep 5
+
+echo "Sonarcube has been successfully installed"
+echo "Great work!"
